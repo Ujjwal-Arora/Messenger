@@ -14,6 +14,10 @@ import PhotosUI
 
 @MainActor
 class UserViewModel : ObservableObject{
+//    @Published var showLogInView = false
+    @Published var showSignUpView = false
+
+    
     @Published var currentAuthUser = Auth.auth().currentUser
     @Published var currentFetchedUser : UserModel?
     @Published var email = "@gmail.com"
@@ -28,11 +32,17 @@ class UserViewModel : ObservableObject{
     
     private let userService = UserService()
     
-    func authSignIn() async throws{
+    init() {
+        Task{
+            try? await fetchUserFromFirestore()
+        }
+    }
+    
+    func authSignUp() async throws{
         do{
-            let result = try await userService.authSignIn(email: email, password: password)
+            let result = try await userService.authSignUp(email: email, password: password)
             self.currentAuthUser = result.user
-            print("authSignIn done")
+            print("authSignUp done")
             
             try await uploadImageToFirebaseStorage()
             self.currentFetchedUser = UserModel(email: email, password: password, fullname: fullname, profilePhotoUrl: profilePhotoUrl)
@@ -74,7 +84,8 @@ class UserViewModel : ObservableObject{
     }
     func fetchUserFromFirestore() async throws{
         do{
-            let reference = Firestore.firestore().collection("users").document(currentAuthUser?.uid ?? UUID().uuidString)
+            guard let fromId = currentAuthUser?.uid else{return}
+            let reference = Firestore.firestore().collection("users").document(fromId)
             self.currentFetchedUser = try await reference.getDocument(as: UserModel.self)
             print("fetched user from firestore")
         }catch{
@@ -95,40 +106,40 @@ class UserViewModel : ObservableObject{
             print(error.localizedDescription)
         }
     }
-    func uploadMessageToFirestore(chatPartnerId : String) async throws{
-        do{
-            guard let fromId = currentAuthUser?.uid else{return}
-            let newMessage = MessageModel(text: messageText, fromId: fromId, toId: chatPartnerId)
-            let encodedMessage = try Firestore.Encoder().encode(newMessage)
-            let reference = Firestore.firestore().collection("messages")
-            try await reference.document(fromId).collection(chatPartnerId).document(newMessage.id).setData(encodedMessage)
-            try await reference.document(chatPartnerId).collection(fromId).document(newMessage.id).setData(encodedMessage)
-            print("uploaded msg to firestore")
-        }catch{
-            print(error.localizedDescription)
-        }
-    }
-    func fetchMessagesFromFirestore(chatPartnerId : String){
-        guard let fromId = currentAuthUser?.uid else{return}
-        
-        let query = Firestore.firestore()
-            .collection("messages")
-            .document(fromId)
-            .collection(chatPartnerId)
-            .order(by: "timestamp")
-        
-        query.addSnapshotListener { snapshot, _ in
-            
-            guard let allMessagesDocuments = snapshot?.documents else {return}
-            do{
-                self.recentMessage = try allMessagesDocuments.last?.data(as: MessageModel.self)
-                self.allMessages = try allMessagesDocuments.compactMap { doc in
-                    try doc.data(as: MessageModel.self)
-                }
-            }catch{
-                print(error.localizedDescription)
-            }
-            print("fetched msgs from firestore")
-        }
-    }
+//    func uploadMessageToFirestore(chatPartnerId : String) async throws{
+//        do{
+//            guard let fromId = currentAuthUser?.uid else{return}
+//            let newMessage = MessageModel(text: messageText, fromId: fromId, toId: chatPartnerId)
+//            let encodedMessage = try Firestore.Encoder().encode(newMessage)
+//            let reference = Firestore.firestore().collection("messages")
+//            try await reference.document(fromId).collection(chatPartnerId).document(newMessage.id).setData(encodedMessage)
+//            try await reference.document(chatPartnerId).collection(fromId).document(newMessage.id).setData(encodedMessage)
+//            print("uploaded msg to firestore")
+//        }catch{
+//            print(error.localizedDescription)
+//        }
+//    }
+//    func fetchMessagesFromFirestore(chatPartnerId : String){
+//        guard let fromId = currentAuthUser?.uid else{return}
+//        
+//        let query = Firestore.firestore()
+//            .collection("messages")
+//            .document(fromId)
+//            .collection(chatPartnerId)
+//            .order(by: "timestamp")
+//        
+//        query.addSnapshotListener { snapshot, _ in
+//            
+//            guard let allMessagesDocuments = snapshot?.documents else {return}
+//            do{
+//                self.recentMessage = try allMessagesDocuments.last?.data(as: MessageModel.self)
+//                self.allMessages = try allMessagesDocuments.compactMap { doc in
+//                    try doc.data(as: MessageModel.self)
+//                }
+//                print("fetched msgs from firestore")
+//            }catch{
+//                print(error.localizedDescription)
+//            }
+//        }
+//    }
 }

@@ -20,12 +20,13 @@ struct MessengerApp: App {
             NavigationStack{
                 if vm.currentAuthUser == nil{
                     LogInView()
-                        .environmentObject(vm)
+ //                       .environmentObject(vm)
                 }else{
-                    ContentView()
-                        .environmentObject(vm)
+                    ChatListView()
+ //                       .environmentObject(vm)
                 }
             }
+            .environmentObject(vm)
         }
     }
 }

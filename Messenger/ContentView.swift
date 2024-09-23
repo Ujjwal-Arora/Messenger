@@ -48,10 +48,10 @@ struct ContentView: View {
                 SecureField("password", text: $vm.password)
                     .textInputAutocapitalization(.never)
                 
-                Button("SignIn") {
+                Button("SignUp") {
                     Task{
                         do{
-                            try await vm.authSignIn()
+                            try await vm.authSignUp()
                         }catch{
                             print(error.localizedDescription)
                         }
@@ -76,7 +76,7 @@ struct ContentView: View {
                 TextField("message", text: $vm.messageText)
                 Button("send") {
                     Task{
-                        try await vm.uploadMessageToFirestore(chatPartnerId: "zpxyuqXPU3RDJbEdMwtAhhGPwvv1")
+//                        try await vm.uploadMessageToFirestore(chatPartnerId: "zpxyuqXPU3RDJbEdMwtAhhGPwvv1")
                     }
                 }
                 ForEach(vm.allMessages) {
@@ -87,15 +87,15 @@ struct ContentView: View {
             .padding()
 
             .onChange(of: vm.currentAuthUser, { _, _ in
-                vm.fetchMessagesFromFirestore(chatPartnerId: "zpxyuqXPU3RDJbEdMwtAhhGPwvv1")
+ //               vm.fetchMessagesFromFirestore(chatPartnerId: "zpxyuqXPU3RDJbEdMwtAhhGPwvv1")
            //     fetchRecentMessageFromFirestore(chatPartnerId: "zpxyuqXPU3RDJbEdMwtAhhGPwvv1")
 
             })
-            .task {
-                try? await vm.fetchUserFromFirestore()
-                vm.fetchMessagesFromFirestore(chatPartnerId: "zpxyuqXPU3RDJbEdMwtAhhGPwvv1")
-            //    fetchRecentMessageFromFirestore(chatPartnerId: "zpxyuqXPU3RDJbEdMwtAhhGPwvv1")
-            }
+//            .task {
+//                try? await vm.fetchUserFromFirestore()
+// //               vm.fetchMessagesFromFirestore(chatPartnerId: "zpxyuqXPU3RDJbEdMwtAhhGPwvv1")
+//            //    fetchRecentMessageFromFirestore(chatPartnerId: "zpxyuqXPU3RDJbEdMwtAhhGPwvv1")
+//            }
         
         }
         .navigationTitle("content view")
