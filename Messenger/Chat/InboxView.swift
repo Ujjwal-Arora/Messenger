@@ -1,79 +1,127 @@
+//
+//  InboxView.swift
+//  Messenger
+//
+//  Created by Ujjwal Arora on 23/09/24.
+//
+
 import SwiftUI
-import FirebaseFirestore
 
 struct InboxView: View {
-    @State var recentUsers: [UserModel] = []
-    @State var recentMessages: [MessageModel] = []
-    private var db = Firestore.firestore()
     @EnvironmentObject var vm : UserViewModel
+    @StateObject private var mm : InboxViewModel
+    
+    init(vm: UserViewModel) {
+        _mm = StateObject(wrappedValue: InboxViewModel(vm: vm))
+    }
     
     var body: some View {
-        List {
-            ForEach(0..<recentUsers.count,id: \.self){num in
-                NavigationLink {
-                    ChatView(chatPartner: recentUsers[num])
-                        .environmentObject(vm)
-                } label: {
-                    VStack(alignment: .leading) {
-                        Text("Receiver: \(recentUsers[num].email)")
-                        Text("Last Message: \(recentMessages[num].text)")
-                    }
-                }
-
-               
-            }
-        }
-        .onAppear {
-            listenForRecentMessages(for: "6Vz7DNa7gudPkRHyTC3Q0uIj7Q63")
-        }
-    }
-
-    func listenForRecentMessages(for senderId: String) {
-        db.collection("messages")
-            .document(senderId)
-            .collection("recentMessages")
-            .addSnapshotListener { snapshot, _ in
-               
-                guard let snapshot = snapshot else {
-                print("No recent messages found")
-                    return
-                }
-                self.recentUsers = []
-                self.recentMessages = []
-
-                for document in snapshot.documents {
-                    let receiverId = document.documentID
-                    do {
-                        let messageData = try document.data(as: MessageModel.self)
-
-                        Task {
-                            do {
-                                let userModel = try await fetchUsersFromId(chatPartnerId: receiverId)
-                                
-                                DispatchQueue.main.async {
-                                    self.recentUsers.append(userModel)
-                                    self.recentMessages.append(messageData)
+        VStack {
+            List {
+                ForEach(0..<mm.recentUsers.count,id: \.self){num in
+                    NavigationLink {
+                        ChatView(chatPartner: mm.recentUsers[num])
+                            .environmentObject(vm)
+                    } label: {
+                        HStack(alignment: .top,spacing: 10){
+                            if let url = URL(string: mm.recentUsers[num].profilePhotoUrl){
+                                AsyncImage(url: url) { image in
+                                    image
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 50,height: 50)
+                                        .clipShape(Circle())
+                                } placeholder: {
+                                    ProgressView()
+                                        .frame(width: 50,height: 50)
                                 }
-                            } catch {
-                                print("Error fetching user: \(error.localizedDescription)")
                             }
+                            else{
+                                Image(systemName: "person.circle")
+                                    .resizable()
+                                    .frame(width: 50,height: 50)
+                            }
+                            VStack(alignment : .leading,spacing: 10) {
+                                HStack {
+                                    Text(mm.recentUsers[num].email)
+                                        .font(.subheadline)
+                                        .bold()
+                                    Spacer()
+                                    Text("\(mm.recentMessages[num].timestamp.dateValue(),style: .offset) ago")
+                                        .font(.caption)
+                                        .foregroundStyle(.gray)
+                                }
+                                
+                                Text(mm.recentMessages[num].text)
+                                    .foregroundStyle(.gray)
+                                    .font(.subheadline)
+                                    .lineLimit(1)
+                            }
+                            
                         }
-                    } catch {
-                        print(error.localizedDescription)
+                        
                     }
+                    
+                    
+                    
                 }
             }
+            Button(action: {
+                mm.showNewChatView = true
+            }, label: {
+                Text("New message")
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .modifier(BoxModifier(backgroundColor: .blue))
+                    .padding()
+            })
+            .fullScreenCover(isPresented: $mm.showNewChatView, content: {
+                NewChatView()
+            })
+            
+            .task {
+                
+            }
+            .toolbar{
+                ToolbarItem(placement: .topBarLeading) {
+                    HStack{
+                        if let url = URL(string: vm.currentFetchedUser?.profilePhotoUrl ?? ""){
+                            AsyncImage(url: url) { image in
+                                image
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 30,height: 100)
+                                    .clipShape(Circle())
+                            } placeholder: {
+                                ProgressView()
+                                    .frame(width: 30,height: 100)
+                            }
+                            Text("Chats")
+                                .font(.title)
+                                .fontWeight(.semibold)
+                        }
+                    }
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: {
+                        try? vm.authSignOut()
+                    }, label: {
+                        Image(systemName: "square.and.pencil.circle.fill")
+                            .font(.title3)
+                            .foregroundStyle(.gray)
+                    })
+                }
+            }
+        }
     }
-
-    func fetchUsersFromId(chatPartnerId: String) async throws -> UserModel {
-        try await db.collection("users").document(chatPartnerId).getDocument().data(as: UserModel.self)
-    }
+    
+    
 }
 
 #Preview {
     NavigationStack {
-        InboxView()
+        InboxView(vm: UserViewModel())
             .environmentObject(UserViewModel())
-
+        
     }
 }

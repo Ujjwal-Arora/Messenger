@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		A806FB652C9EE67B00206181 /* MessengerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A806FB642C9EE67B00206181 /* MessengerApp.swift */; };
-		A806FB672C9EE67B00206181 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A806FB662C9EE67B00206181 /* ContentView.swift */; };
 		A806FB692C9EE67D00206181 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A806FB682C9EE67D00206181 /* Assets.xcassets */; };
 		A806FB6C2C9EE67D00206181 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A806FB6B2C9EE67D00206181 /* Preview Assets.xcassets */; };
 		A806FB732C9EE75200206181 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A806FB722C9EE75200206181 /* GoogleService-Info.plist */; };
@@ -23,21 +22,17 @@
 		A806FB872CA0935000206181 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A806FB862CA0935000206181 /* SignUpView.swift */; };
 		A806FB8A2CA09AA800206181 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A806FB892CA09AA800206181 /* ChatView.swift */; };
 		A806FB8C2CA09ABF00206181 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A806FB8B2CA09ABF00206181 /* ChatViewModel.swift */; };
-		A806FB8E2CA0A80200206181 /* ChatListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A806FB8D2CA0A80200206181 /* ChatListView.swift */; };
 		A806FB912CA0B1A900206181 /* BoxModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A806FB902CA0B1A900206181 /* BoxModifier.swift */; };
-		A806FB932CA0CF1C00206181 /* ChatListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A806FB922CA0CF1C00206181 /* ChatListViewModel.swift */; };
 		A8E3C82D2CA19CD10068E373 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E3C82C2CA19CD10068E373 /* MockData.swift */; };
-		A8E3C82F2CA1B3910068E373 /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E3C82E2CA1B3910068E373 /* test.swift */; };
 		A8E3C8332CA215380068E373 /* NewChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E3C8322CA215380068E373 /* NewChatView.swift */; };
 		A8E3C8352CA215450068E373 /* NewChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E3C8342CA215450068E373 /* NewChatViewModel.swift */; };
-		A8E3C8372CA236130068E373 /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E3C8362CA236120068E373 /* SwiftUIView.swift */; };
 		A8E3C8392CA2F84B0068E373 /* InboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E3C8382CA2F84B0068E373 /* InboxView.swift */; };
+		A8E3C83B2CA35A2E0068E373 /* InboxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E3C83A2CA35A2E0068E373 /* InboxViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		A806FB612C9EE67B00206181 /* Messenger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Messenger.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A806FB642C9EE67B00206181 /* MessengerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessengerApp.swift; sourceTree = "<group>"; };
-		A806FB662C9EE67B00206181 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A806FB682C9EE67D00206181 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A806FB6B2C9EE67D00206181 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A806FB722C9EE75200206181 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -49,15 +44,12 @@
 		A806FB862CA0935000206181 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		A806FB892CA09AA800206181 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		A806FB8B2CA09ABF00206181 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
-		A806FB8D2CA0A80200206181 /* ChatListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListView.swift; sourceTree = "<group>"; };
 		A806FB902CA0B1A900206181 /* BoxModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxModifier.swift; sourceTree = "<group>"; };
-		A806FB922CA0CF1C00206181 /* ChatListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListViewModel.swift; sourceTree = "<group>"; };
 		A8E3C82C2CA19CD10068E373 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
-		A8E3C82E2CA1B3910068E373 /* test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
 		A8E3C8322CA215380068E373 /* NewChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewChatView.swift; sourceTree = "<group>"; };
 		A8E3C8342CA215450068E373 /* NewChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewChatViewModel.swift; sourceTree = "<group>"; };
-		A8E3C8362CA236120068E373 /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
 		A8E3C8382CA2F84B0068E373 /* InboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxView.swift; sourceTree = "<group>"; };
+		A8E3C83A2CA35A2E0068E373 /* InboxViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,8 +90,6 @@
 				A806FB882CA09A8600206181 /* Chat */,
 				A806FB832CA0533F00206181 /* Views */,
 				A806FB642C9EE67B00206181 /* MessengerApp.swift */,
-				A806FB662C9EE67B00206181 /* ContentView.swift */,
-				A8E3C82E2CA1B3910068E373 /* test.swift */,
 				A806FB7F2CA04A4500206181 /* UserService.swift */,
 				A806FB812CA04ACB00206181 /* UserViewModel.swift */,
 				A806FB7B2C9EEE4000206181 /* UserModel.swift */,
@@ -133,12 +123,10 @@
 			children = (
 				A806FB892CA09AA800206181 /* ChatView.swift */,
 				A806FB8B2CA09ABF00206181 /* ChatViewModel.swift */,
-				A806FB8D2CA0A80200206181 /* ChatListView.swift */,
-				A806FB922CA0CF1C00206181 /* ChatListViewModel.swift */,
 				A8E3C8322CA215380068E373 /* NewChatView.swift */,
 				A8E3C8342CA215450068E373 /* NewChatViewModel.swift */,
-				A8E3C8362CA236120068E373 /* SwiftUIView.swift */,
 				A8E3C8382CA2F84B0068E373 /* InboxView.swift */,
+				A8E3C83A2CA35A2E0068E373 /* InboxViewModel.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -240,10 +228,6 @@
 			files = (
 				A806FB912CA0B1A900206181 /* BoxModifier.swift in Sources */,
 				A8E3C8332CA215380068E373 /* NewChatView.swift in Sources */,
-				A8E3C8372CA236130068E373 /* SwiftUIView.swift in Sources */,
-				A806FB8E2CA0A80200206181 /* ChatListView.swift in Sources */,
-				A806FB672C9EE67B00206181 /* ContentView.swift in Sources */,
-				A806FB932CA0CF1C00206181 /* ChatListViewModel.swift in Sources */,
 				A8E3C8392CA2F84B0068E373 /* InboxView.swift in Sources */,
 				A806FB852CA0535B00206181 /* LogInView.swift in Sources */,
 				A8E3C82D2CA19CD10068E373 /* MockData.swift in Sources */,
@@ -254,8 +238,8 @@
 				A806FB7C2C9EEE4000206181 /* UserModel.swift in Sources */,
 				A806FB652C9EE67B00206181 /* MessengerApp.swift in Sources */,
 				A806FB872CA0935000206181 /* SignUpView.swift in Sources */,
+				A8E3C83B2CA35A2E0068E373 /* InboxViewModel.swift in Sources */,
 				A806FB8C2CA09ABF00206181 /* ChatViewModel.swift in Sources */,
-				A8E3C82F2CA1B3910068E373 /* test.swift in Sources */,
 				A806FB7E2C9F84F900206181 /* MessageModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

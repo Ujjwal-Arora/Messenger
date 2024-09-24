@@ -14,10 +14,6 @@ import PhotosUI
 
 @MainActor
 class UserViewModel : ObservableObject{
-//    @Published var showLogInView = false
-    @Published var showSignUpView = false
-
-    
     @Published var currentAuthUser = Auth.auth().currentUser
     @Published var currentFetchedUser : UserModel?
     @Published var email = "@gmail.com"
@@ -25,6 +21,7 @@ class UserViewModel : ObservableObject{
     @Published var fullname = "Ujjwal Arora"
     @Published var profilePhotoUrl = ""
     @Published var selectedItem : PhotosPickerItem?
+    @Published var showSignUpView = false
     
     @Published var messageText = ""
     @Published var allMessages = [MessageModel]()
@@ -106,40 +103,4 @@ class UserViewModel : ObservableObject{
             print(error.localizedDescription)
         }
     }
-//    func uploadMessageToFirestore(chatPartnerId : String) async throws{
-//        do{
-//            guard let fromId = currentAuthUser?.uid else{return}
-//            let newMessage = MessageModel(text: messageText, fromId: fromId, toId: chatPartnerId)
-//            let encodedMessage = try Firestore.Encoder().encode(newMessage)
-//            let reference = Firestore.firestore().collection("messages")
-//            try await reference.document(fromId).collection(chatPartnerId).document(newMessage.id).setData(encodedMessage)
-//            try await reference.document(chatPartnerId).collection(fromId).document(newMessage.id).setData(encodedMessage)
-//            print("uploaded msg to firestore")
-//        }catch{
-//            print(error.localizedDescription)
-//        }
-//    }
-//    func fetchMessagesFromFirestore(chatPartnerId : String){
-//        guard let fromId = currentAuthUser?.uid else{return}
-//        
-//        let query = Firestore.firestore()
-//            .collection("messages")
-//            .document(fromId)
-//            .collection(chatPartnerId)
-//            .order(by: "timestamp")
-//        
-//        query.addSnapshotListener { snapshot, _ in
-//            
-//            guard let allMessagesDocuments = snapshot?.documents else {return}
-//            do{
-//                self.recentMessage = try allMessagesDocuments.last?.data(as: MessageModel.self)
-//                self.allMessages = try allMessagesDocuments.compactMap { doc in
-//                    try doc.data(as: MessageModel.self)
-//                }
-//                print("fetched msgs from firestore")
-//            }catch{
-//                print(error.localizedDescription)
-//            }
-//        }
-//    }
 }

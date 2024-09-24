@@ -20,10 +20,8 @@ struct MessengerApp: App {
             NavigationStack{
                 if vm.currentAuthUser == nil{
                     LogInView()
- //                       .environmentObject(vm)
                 }else{
-                    InboxView()
- //                       .environmentObject(vm)
+                    InboxView(vm: vm)
                 }
             }
             .environmentObject(vm)

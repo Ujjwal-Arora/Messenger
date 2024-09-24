@@ -10,53 +10,65 @@ import SwiftUI
 struct NewChatView: View {
     @StateObject var vm = NewChatViewModel()
     @EnvironmentObject var userVM : UserViewModel
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
-        VStack{
-        ScrollView{
-            ForEach(vm.allUsersExceptSelf){ user in
-                //   Text(user.email)
-                HStack{
-                    if let url = URL(string: user.profilePhotoUrl){
-                        AsyncImage(url: url) { image in
-                            image
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 25,height: 25)
-                                .clipShape(Circle())
-                        } placeholder: {
-                            ProgressView()
+        NavigationStack {
+            VStack{
+                ScrollView{
+                    Text("App Users")
+                        .foregroundStyle(.gray)
+                        .font(.footnote)
+                        .frame(maxWidth: .infinity,alignment: .leading)
+                    
+                    ForEach(vm.allUsersExceptSelf){ user in
+                        NavigationLink {
+                            ChatView(chatPartner: user)
+                                .onDisappear {
+                                    dismiss()
+                                }
+                        } label: {
+                            HStack{
+                                if let url = URL(string: user.profilePhotoUrl){
+                                    AsyncImage(url: url) { image in
+                                        image
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: 30,height: 30)
+                                            .clipShape(Circle())
+                                    } placeholder: {
+                                        ProgressView()
+                                            .frame(width: 30,height: 30)
+                                    }
+                                }else{
+                                    Image(systemName: "person.circle")
+                                        .resizable()
+                                        .frame(width: 30,height: 30)
+
+                                }
+                                Text(user.email)
+                                    .font(.subheadline)
+                                    .fontWeight(.semibold)
+                            }.foregroundStyle(.black)
                         }
-                        
-                        
-                        
-                    }else{
-                        Image(systemName: "person.circle")
-                    }
-                    Text(user.email)
-                        .font(.title)
-                        .fontWeight(.semibold)
-                }
-            }.frame(maxWidth: .infinity,alignment: .leading)
-            }.task {
+                        Divider()
+                    }.frame(maxWidth: .infinity,alignment: .leading)
+                }.padding()
+            }
+            .searchable(text: $vm.searchText)
+            .task {
                 try? await vm.fetchAllUsersExceptSelf(currentUserId: userVM.currentAuthUser?.uid ?? "")
             }
-        }
-        //        for ChatListView
-        //        VStack{
-        //            ScrollView{
-        //
-        //            }
-        //            Button(action: {
-        //               // showNewChatView = true
-        //            }, label: {
-        //                Text("New message")
-        //                    .foregroundStyle(.white)
-        //                    .frame(maxWidth: .infinity)
-        //                    .modifier(BoxModifier(backgroundColor: .blue))
-        //                    .padding()
-        //            })
-        //        }
+            .navigationTitle("New Message")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar{
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+            }
+        }        
     }
 }
 
