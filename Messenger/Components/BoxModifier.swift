@@ -13,7 +13,7 @@ struct BoxModifier : ViewModifier {
     func body(content: Content) -> some View {
         content
             .padding(12)
-            .frame(maxWidth: .infinity)
+      //      .frame(maxWidth: .infinity)
             .background(backgroundColor)
             .clipShape(RoundedRectangle(cornerRadius: 10))
 

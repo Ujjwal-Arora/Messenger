@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestore
 
-struct MessageModel : Identifiable,Codable{
+struct MessageModel : Identifiable,Codable,Hashable{
     var id = UUID().uuidString
     let text : String
     var timestamp = Timestamp()

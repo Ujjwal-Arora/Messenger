@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct SignUpView: View {
     @EnvironmentObject var vm : UserViewModel
@@ -13,33 +14,6 @@ struct SignUpView: View {
 
     
     var body: some View {
-//        VStack{
-//            Text(vm.recentMessage?.text ?? "no recent message")
-//            Text("Auth User : \(vm.currentAuthUser?.email ?? "no auth user")")
-//            Text("Fetched User : \(vm.currentFetchedUser?.email ?? "no fetched user")")
-//            
-//            if let url = URL(string: vm.currentFetchedUser?.profilePhotoUrl ?? ""){
-//                AsyncImage(url: url, scale: 10)
-//            }
-//            TextField("email", text: $vm.email)
-//                .textInputAutocapitalization(.never)
-//            SecureField("password", text: $vm.password)
-//                .textInputAutocapitalization(.never)
-//            
-//            
-//            Button("signUp") {
-//                Task{
-//                    do{
-//                        try await vm.authSignUp()
-//                        dismiss()
-//                    }catch{
-//                        print(error.localizedDescription)
-//                    }
-//                }
-//            }
-//        }
-//        .navigationTitle("SignUp view")
-        
         VStack(spacing : 15){
             Spacer()
             Text("SignUp")
@@ -51,7 +25,7 @@ struct SignUpView: View {
                 .scaledToFill()
                 .frame(width: 100, height: 100)
             
-       //     PhotosPicker("Profile Photo", selection: $vm.selectedUserItem)
+            PhotosPicker("Profile Photo", selection: $vm.selectedItem)
             
             TextField("Enter fullname", text: $vm.fullname)
                 .modifier(BoxModifier(backgroundColor: .gray.opacity(0.1)))
@@ -65,14 +39,10 @@ struct SignUpView: View {
             Button(action: {
                 Task{
                     try await vm.authSignUp()
-//                    if vm.currentAuthUser != nil{
-//                        vm.showLogInView = false
-//                        vm.showSignUpView = false
-//                    }
-                    
                 }
             }, label: {
                 Text("SignIn")
+                    .frame(maxWidth: .infinity)
                     .foregroundStyle(.white)
                     .modifier(BoxModifier(backgroundColor: .blue))
             })

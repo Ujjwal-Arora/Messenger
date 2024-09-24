@@ -22,7 +22,7 @@ struct MessengerApp: App {
                     LogInView()
  //                       .environmentObject(vm)
                 }else{
-                    ChatListView()
+                    InboxView()
  //                       .environmentObject(vm)
                 }
             }

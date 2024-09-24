@@ -13,7 +13,6 @@ import FirebaseFirestore
 class ChatViewModel : ObservableObject{
 //    @Published var currentAuthUser = Auth.auth().currentUser
 //    @Published var currentFetchedUser : UserModel?
-
     @Published var allUsersExceptSelf = [UserModel]()
 
     
@@ -30,6 +29,16 @@ class ChatViewModel : ObservableObject{
             try await reference.document(fromId).collection(chatPartnerId).document(newMessage.id).setData(encodedMessage)
             try await reference.document(chatPartnerId).collection(fromId).document(newMessage.id).setData(encodedMessage)
             print("uploaded msg to firestore")
+            
+            //upload recent message
+            let recentCurrentUserReference = Firestore.firestore().collection("messages").document(fromId).collection("recentMessages").document(chatPartnerId)
+            try await recentCurrentUserReference.setData(encodedMessage)
+            
+            let recentPartnerReference = Firestore.firestore().collection("messages").document(chatPartnerId).collection("recentMessages").document(fromId)
+            try await recentPartnerReference.setData(encodedMessage)
+
+            
+            
         }catch{
             print(error.localizedDescription)
         }
