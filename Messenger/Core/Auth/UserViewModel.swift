@@ -22,10 +22,13 @@ class UserViewModel : ObservableObject{
     @Published var profilePhotoUrl = ""
     @Published var selectedItem : PhotosPickerItem?
     @Published var showSignUpView = false
+    @Published var error : String?
+
     
     @Published var messageText = ""
     @Published var allMessages = [MessageModel]()
     @Published var recentMessage : MessageModel?
+    
     
     private let userService = UserService()
     
@@ -35,37 +38,39 @@ class UserViewModel : ObservableObject{
         }
     }
     
-    func authSignUp() async throws{
+    func SignUp() async throws{
         do{
             let result = try await userService.authSignUp(email: email, password: password)
             self.currentAuthUser = result.user
-            print("authSignUp done")
-            
+            print("SignUp done")
+            self.error = nil
+
             try await uploadImageToFirebaseStorage()
-            self.currentFetchedUser = UserModel(email: email, password: password, fullname: fullname, profilePhotoUrl: profilePhotoUrl)
+            self.currentFetchedUser = UserModel(email: email, fullname: fullname, profilePhotoUrl: profilePhotoUrl)
             try await uploadUserToFirestore()
         }catch{
-            print(error.localizedDescription)
+            self.error = error.localizedDescription
         }
     }
-    func authSignOut() throws{
+    func SignOut() throws{
         do{
             try  userService.authSignOut()
             self.currentAuthUser = nil
             self.currentFetchedUser = nil
-            print("authSignOut done")
+            print("SignOut done")
         }catch{
-            print(error.localizedDescription)
+            self.error = error.localizedDescription
         }
     }
-    func authLogIn() async throws{
+    func LogIn() async throws{
         do{
             let result = try await userService.authLogIn(email: email, password: password)
             self.currentAuthUser = result.user
-            print("authLogIn done")
+            print("LogIn done")
+            self.error = nil
             try await fetchUserFromFirestore()
         }catch{
-            print(error.localizedDescription)
+            self.error = error.localizedDescription
         }
     }
     func uploadUserToFirestore() async throws{

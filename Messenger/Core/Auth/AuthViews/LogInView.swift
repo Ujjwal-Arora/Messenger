@@ -33,7 +33,7 @@ struct LogInView: View {
                     .textInputAutocapitalization(.never)
                 Button(action: {
                     Task{
-                        try await userVM.authLogIn()
+                        try await userVM.LogIn()
                     }
                 }, label: {
                     Text("LogIn")
@@ -41,10 +41,14 @@ struct LogInView: View {
                         .foregroundStyle(.white)
                         .modifier(BoxViewModifier(backgroundColor: .blue))
                 })
+                if let error = userVM.error{
+                    Text(error)
+                        .foregroundStyle(.red)
+                        .multilineTextAlignment(.center)
+                }
                 Spacer()
                 Button {
                     userVM.showSignUpView = true
-                    
                 } label: {
                     Text("Dont have an account? SignUp")
                         .font(.subheadline)

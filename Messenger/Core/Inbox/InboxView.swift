@@ -19,10 +19,7 @@ struct InboxView: View {
         VStack {
             List {
                 ForEach(0..<inboxVM.recentUsers.count,id: \.self){num in
-                    NavigationLink {
-                        ChatView(chatPartner: inboxVM.recentUsers[num])
-                            .environmentObject(userVM)
-                    } label: {
+                    NavigationLink(value: inboxVM.recentUsers[num]) {
                         HStack(alignment: .top,spacing: 10){
                             ProfilePhotoView(profilePhotoUrl: inboxVM.recentUsers[num].profilePhotoUrl, size: 50)
                             VStack(alignment : .leading,spacing: 10) {
@@ -31,7 +28,7 @@ struct InboxView: View {
                                         .font(.subheadline)
                                         .bold()
                                     Spacer()
-                                    Text("\(inboxVM.recentMessages[num].timestamp.dateValue(),style: .offset) ago")
+                                    Text(inboxVM.recentMessages[num].timestamp.dateValue(),style: .time)
                                         .font(.caption)
                                         .foregroundStyle(.gray)
                                 }
@@ -43,7 +40,11 @@ struct InboxView: View {
                         }
                     }
                 }
+            }.navigationDestination(for: UserModel.self) { user in
+                ChatView(chatPartner: user)
+                    .environmentObject(userVM)
             }
+
             Button(action: {
                 inboxVM.showNewChatView = true
             }, label: {
@@ -67,7 +68,7 @@ struct InboxView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
-                        try? userVM.authSignOut()
+                        try? userVM.SignOut()
                     }, label: {
                         Image(systemName: "square.and.pencil.circle.fill")
                             .font(.title3)

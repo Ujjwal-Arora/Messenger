@@ -12,7 +12,6 @@ struct SignUpView: View {
     @EnvironmentObject var userVM : UserViewModel
     @Environment(\.dismiss) var dismiss
 
-    
     var body: some View {
         VStack(spacing : 15){
             Spacer()
@@ -38,7 +37,7 @@ struct SignUpView: View {
                 .textInputAutocapitalization(.never)
             Button(action: {
                 Task{
-                    try await userVM.authSignUp()
+                    try await userVM.SignUp()
                 }
             }, label: {
                 Text("SignIn")
@@ -46,9 +45,12 @@ struct SignUpView: View {
                     .foregroundStyle(.white)
                     .modifier(BoxViewModifier(backgroundColor: .blue))
             })
-            
+            if let error = userVM.error{
+                Text(error)
+                    .foregroundStyle(.red)
+                    .multilineTextAlignment(.center)
+            }
             Spacer()
-            
         }
         .font(.callout)
         .padding()

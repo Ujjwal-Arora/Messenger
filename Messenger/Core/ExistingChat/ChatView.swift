@@ -14,28 +14,27 @@ struct ChatView: View {
     
     var body: some View {
         
-        if let toId = chatPartner?.id{
+        if let currentUid = userVM.currentAuthUser?.uid, let toId = chatPartner?.id{
             VStack {
                 ScrollViewReader { proxy in
                     ScrollView {
                         ProfilePhotoView(profilePhotoUrl: chatPartner?.profilePhotoUrl ?? "", size: 100)
                         ForEach(chatVM.allMessages) { msg in
-                            HStack{
-                                Text(msg.text)
-                                    .foregroundStyle(msg.toId == toId ? .white : .black)
-                                    .modifier(BoxViewModifier(backgroundColor: msg.toId == toId ? .blue : .gray.opacity(0.3)))
-                                    .frame(maxWidth: .infinity,alignment: msg.toId == toId ? .trailing : .leading)
-                                    .padding(.horizontal)
+                            Text(msg.text)
+                                .foregroundStyle(msg.fromId == currentUid ? .white : .black)
+                                .modifier(BoxViewModifier(backgroundColor: msg.fromId == currentUid ? .blue : .gray.opacity(0.3)))
+                                .frame(maxWidth: .infinity,alignment: msg.fromId == currentUid ? .trailing : .leading)
+                                .padding(.horizontal)
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .onChange(of: chatVM.allMessages) { _, newMessages in
+                        if let lastMessageId = newMessages.last?.id {
+                            withAnimation {
+                                proxy.scrollTo(lastMessageId, anchor: .bottom)
                             }
                         }
-                    }.frame(maxWidth: .infinity)
-                        .onChange(of: chatVM.allMessages) { _, newMessages in
-                            if let lastMessageId = newMessages.last?.id {
-                                withAnimation {
-                                    proxy.scrollTo(lastMessageId, anchor: .bottom)
-                                }
-                            }
-                        }
+                    }
                 }
                 HStack{
                     TextField("message", text: $chatVM.messageText,axis: .vertical)
@@ -44,31 +43,21 @@ struct ChatView: View {
                     
                     Button(action: {
                         Task{
-                            guard let fromId = userVM.currentAuthUser?.uid else{return}
-                            try await chatVM.uploadMessageToFirestore(fromId: fromId, chatPartnerId: toId)
+                            try await chatVM.uploadMessageToFirestore(fromId: currentUid, chatPartnerId: toId)
                             chatVM.messageText = ""
                         }
                     }, label: {
                         Text("Send")
                             .fontWeight(.semibold)
                     })
-                    
                 }
                 .navigationTitle(chatPartner?.fullname ?? "no name")
                 .navigationBarTitleDisplayMode(.inline)
                 .ignoresSafeArea()
                 .padding(.horizontal)
-                
-            }.onChange(of: userVM.currentAuthUser, { _, _ in
-                
-                guard let fromId = userVM.currentAuthUser?.uid else{return}
-                chatVM.fetchMessagesFromFirestore(fromId: fromId, chatPartnerId: toId)
-                
-            })
+            }
             .task {
-                guard let fromId = userVM.currentAuthUser?.uid else{return}
-                
-                chatVM.fetchMessagesFromFirestore(fromId: fromId, chatPartnerId: toId)
+                chatVM.fetchMessagesFromFirestore(fromId: currentUid, chatPartnerId: toId)
             }
         }
     }

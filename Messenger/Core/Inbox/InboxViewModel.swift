@@ -19,22 +19,22 @@ class InboxViewModel: ObservableObject {
     init(vm: UserViewModel) {
         self.vm = vm
         Task {
-            try? await listenForRecentMessages(fromId: vm.currentAuthUser?.uid ?? "")
+            guard let uid = vm.currentAuthUser?.uid else{ return }
+            try? await listenForRecentMessages(fromId: uid)
         }
     }
     
     func listenForRecentMessages(fromId: String) async throws {
-        
+        print("qqq")
         Firestore.firestore().collection("messages")
             .document(fromId)
             .collection("recentMessages")
-            .order(by: "timestamp", descending: true)
+            .order(by: "timestamp", descending: true) 
             .addSnapshotListener { snapshot, _ in
                 guard let snapshot = snapshot else {
                     print("No recent msgs")
                     return
                 }
-                
                 Task {
                     var fetchedUsers: [UserModel] = []
                     var fetchedMessages: [MessageModel] = []
