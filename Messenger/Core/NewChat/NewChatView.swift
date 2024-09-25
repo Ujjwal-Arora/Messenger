@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct NewChatView: View {
-    @StateObject var vm = NewChatViewModel()
+    @StateObject var newChatVM = NewChatViewModel()
     @EnvironmentObject var userVM : UserViewModel
     @Environment(\.dismiss) var dismiss
     
@@ -21,7 +21,7 @@ struct NewChatView: View {
                         .font(.footnote)
                         .frame(maxWidth: .infinity,alignment: .leading)
                     
-                    ForEach(vm.allUsersExceptSelf){ user in
+                    ForEach(newChatVM.allUsersExceptSelf){ user in
                         NavigationLink {
                             ChatView(chatPartner: user)
                                 .onDisappear {
@@ -29,23 +29,7 @@ struct NewChatView: View {
                                 }
                         } label: {
                             HStack{
-                                if let url = URL(string: user.profilePhotoUrl){
-                                    AsyncImage(url: url) { image in
-                                        image
-                                            .resizable()
-                                            .scaledToFill()
-                                            .frame(width: 30,height: 30)
-                                            .clipShape(Circle())
-                                    } placeholder: {
-                                        ProgressView()
-                                            .frame(width: 30,height: 30)
-                                    }
-                                }else{
-                                    Image(systemName: "person.circle")
-                                        .resizable()
-                                        .frame(width: 30,height: 30)
-
-                                }
+                                ProfilePhotoView(profilePhotoUrl: user.profilePhotoUrl, size: 30)
                                 Text(user.email)
                                     .font(.subheadline)
                                     .fontWeight(.semibold)
@@ -55,9 +39,9 @@ struct NewChatView: View {
                     }.frame(maxWidth: .infinity,alignment: .leading)
                 }.padding()
             }
-            .searchable(text: $vm.searchText)
+            .searchable(text: $newChatVM.searchText)
             .task {
-                try? await vm.fetchAllUsersExceptSelf(currentUserId: userVM.currentAuthUser?.uid ?? "")
+                try? await newChatVM.fetchAllUsersExceptSelf(currentUserId: userVM.currentAuthUser?.uid ?? "")
             }
             .navigationTitle("New Message")
             .navigationBarTitleDisplayMode(.inline)

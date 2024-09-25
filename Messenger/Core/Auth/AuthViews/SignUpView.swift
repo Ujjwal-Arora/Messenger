@@ -9,7 +9,7 @@ import SwiftUI
 import PhotosUI
 
 struct SignUpView: View {
-    @EnvironmentObject var vm : UserViewModel
+    @EnvironmentObject var userVM : UserViewModel
     @Environment(\.dismiss) var dismiss
 
     
@@ -25,26 +25,26 @@ struct SignUpView: View {
                 .scaledToFill()
                 .frame(width: 100, height: 100)
             
-            PhotosPicker("Profile Photo", selection: $vm.selectedItem)
+            PhotosPicker("Profile Photo", selection: $userVM.selectedItem)
             
-            TextField("Enter fullname", text: $vm.fullname)
-                .modifier(BoxModifier(backgroundColor: .gray.opacity(0.1)))
-            TextField("Enter email", text: $vm.email)
-                .modifier(BoxModifier(backgroundColor: .gray.opacity(0.1)))
+            TextField("Enter fullname", text: $userVM.fullname)
+                .modifier(BoxViewModifier(backgroundColor: .gray.opacity(0.1)))
+            TextField("Enter email", text: $userVM.email)
+                .modifier(BoxViewModifier(backgroundColor: .gray.opacity(0.1)))
                 .textInputAutocapitalization(.never)
                 .keyboardType(.emailAddress)
-            SecureField("Enter your password", text: $vm.password)
-                .modifier(BoxModifier(backgroundColor: .gray.opacity(0.1)))
+            SecureField("Enter your password", text: $userVM.password)
+                .modifier(BoxViewModifier(backgroundColor: .gray.opacity(0.1)))
                 .textInputAutocapitalization(.never)
             Button(action: {
                 Task{
-                    try await vm.authSignUp()
+                    try await userVM.authSignUp()
                 }
             }, label: {
                 Text("SignIn")
                     .frame(maxWidth: .infinity)
                     .foregroundStyle(.white)
-                    .modifier(BoxModifier(backgroundColor: .blue))
+                    .modifier(BoxViewModifier(backgroundColor: .blue))
             })
             
             Spacer()

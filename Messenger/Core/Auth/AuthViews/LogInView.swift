@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LogInView: View {
-    @EnvironmentObject var vm : UserViewModel
+    @EnvironmentObject var userVM : UserViewModel
 
     var body: some View {
 
@@ -23,27 +23,27 @@ struct LogInView: View {
                     .scaledToFill()
                     .frame(width: 100, height: 100)
                     .padding()
-                TextField("Enter email", text: $vm.email)
-                    .modifier(BoxModifier(backgroundColor: .gray.opacity(0.1)))
+                TextField("Enter email", text: $userVM.email)
+                    .modifier(BoxViewModifier(backgroundColor: .gray.opacity(0.1)))
                     .textInputAutocapitalization(.never)
                     .keyboardType(.emailAddress)
 
-                SecureField("Enter your password", text: $vm.password)
-                    .modifier(BoxModifier(backgroundColor: .gray.opacity(0.1)))
+                SecureField("Enter your password", text: $userVM.password)
+                    .modifier(BoxViewModifier(backgroundColor: .gray.opacity(0.1)))
                     .textInputAutocapitalization(.never)
                 Button(action: {
                     Task{
-                        try await vm.authLogIn()
+                        try await userVM.authLogIn()
                     }
                 }, label: {
                     Text("LogIn")
                         .frame(maxWidth: .infinity)
                         .foregroundStyle(.white)
-                        .modifier(BoxModifier(backgroundColor: .blue))
+                        .modifier(BoxViewModifier(backgroundColor: .blue))
                 })
                 Spacer()
                 Button {
-                    vm.showSignUpView = true
+                    userVM.showSignUpView = true
                     
                 } label: {
                     Text("Dont have an account? SignUp")
@@ -52,7 +52,7 @@ struct LogInView: View {
                         .foregroundStyle(.blue)
                         .padding()
                 }
-                .sheet(isPresented: $vm.showSignUpView, content: {
+                .sheet(isPresented: $userVM.showSignUpView, content: {
                     SignUpView()
                 })
 
